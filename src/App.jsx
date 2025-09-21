@@ -5,6 +5,36 @@ const CHAT_API_URL = `${window.location.origin}/api/chat`;
 const INTAKE_API_URL = `${window.location.origin}/api/intake`;
 const EMAIL_API_URL = `${window.location.origin}/api/send-email`;
 
+// --- Data: Associates Logos ---
+const associatesLogos = [
+    { name: "Akrolithos", src: "/images/associates/akrolithos.jpg" },
+    { name: "Alexyl", src: "/images/associates/alexyl.jpg" },
+    { name: "Alfawood", src: "/images/associates/alfawood.jpg" },
+    { name: "Alumil", src: "/images/associates/alumil.jpg" },
+    { name: "Aluminco", src: "/images/associates/aluminco.jpg" },
+    { name: "Chrotex", src: "/images/associates/chrotex.jpg" },
+    { name: "Darvados", src: "/images/associates/darvados.jpg" },
+    { name: "Elvial", src: "/images/associates/elvial.jpg" },
+    { name: "Europa", src: "/images/associates/europa.jpg" },
+    { name: "Heracles", src: "/images/associates/heracles.jpg" },
+    { name: "Kebe", src: "/images/associates/kebe.jpg" },
+    { name: "Kiriakidis", src: "/images/associates/kiriakidis.jpg" },
+    { name: "Kokinogenis", src: "/images/associates/kokinogenis.jpg" },
+    { name: "Koligas", src: "/images/associates/koligas.jpg" },
+    { name: "Kraftpaints", src: "/images/associates/kraftpaints.jpg" },
+    { name: "Maliouris", src: "/images/associates/maliouris.jpg" },
+    { name: "Profilco", src: "/images/associates/profilco.jpg" },
+    { name: "Stiletech", src: "/images/associates/stiletech.jpg" },
+    { name: "Titan", src: "/images/associates/titan.jpg" },
+    { name: "Topodigos", src: "/images/associates/topodigos.jpg" },
+    { name: "Vechro", src: "/images/associates/vechro.jpg" },
+    { name: "Vitex", src: "/images/associates/vitex.jpg" },
+    { name: "Vivehrom", src: "/images/associates/vivehrom.jpg" },
+    { name: "Winco", src: "/images/associates/winco.jpg" },
+    { name: "Xalkis", src: "/images/associates/xalkis.jpg" },
+];
+
+
 // --- Data: All Portfolio Images (for filtering by category) ---
 const portfolioImages = [
     // --- Bathrooms (24 images) ---
@@ -117,6 +147,8 @@ const translations = {
         portfolio_cat_living_rooms: "Σαλόνια",
         portfolio_cat_floors: "Δάπεδα",
         portfolio_cat_entrance: "Είσοδοι",
+        associates_title: "ΟΙ ΣΥΝΕΡΓΑΤΕΣ ΜΑΣ",
+        associates_subtitle: "Συνεργαζόμαστε με κορυφαίες εταιρείες του κλάδου για να εγγυηθούμε υλικά υψηλής ποιότητας και αντοχής σε κάθε έργο.",
         contact_title: "Επικοινωνήστε Μαζί Μου",
         contact_subtitle: "Συμπληρώστε την παρακάτω φόρμα ή μιλήστε απευθείας με τον AI βοηθό μου για άμεση αξιολόγηση του έργου σας.",
         footer_text: "Βασίλης Μανωλάκης. Τηλ:693 728 8572 - MAIL:billmanolaki@gmail.com.",
@@ -173,6 +205,8 @@ const translations = {
         portfolio_cat_living_rooms: "Living Rooms",
         portfolio_cat_floors: "Floors",
         portfolio_cat_entrance: "Entrances",
+        associates_title: "OUR TRUSTED PARTNERS",
+        associates_subtitle: "We collaborate with leading companies in the industry to guarantee high-quality, durable materials for every project.",
         contact_title: "Get In Touch",
         contact_subtitle: "Fill out the form below, or talk directly with my AI assistant for an immediate project intake.",
         footer_text: "Vasilis Manolakis. mobil:0030 693 728 8572 - MAIL:billmanolaki@gmail.com.",
@@ -223,7 +257,7 @@ const GlobalStyles = () => (
 
         #root { width: 100%; }
         html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-light); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
         .header { background-color: var(--bg-dark); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 40; }
         .nav { display: flex; justify-content: space-between; align-items: center; height: 100px; transition: height 0.3s ease; }
@@ -268,6 +302,15 @@ const GlobalStyles = () => (
         .filter-button:hover { background-color: var(--border-color); color: var(--text-light); }
         .filter-button.active { background-color: var(--primary-accent); color: var(--text-light); border-color: var(--primary-accent); }
         .portfolio-grid-item { opacity: 0; transform: scale(0.9); animation: fadeIn 0.5s forwards; }
+        .associates-banner { padding: 4rem 0; overflow: hidden; position: relative; }
+        .associates-banner::before, .associates-banner::after { content: ''; position: absolute; top: 0; width: 200px; height: 100%; z-index: 2; }
+        .associates-banner::before { left: 0; background: linear-gradient(to right, var(--bg-dark), transparent); }
+        .associates-banner::after { right: 0; background: linear-gradient(to left, var(--bg-dark), transparent); }
+        .associates-scroller { display: flex; width: max-content; animation: scroll 60s linear infinite; }
+        .associates-scroller:hover { animation-play-state: paused; }
+        .associate-logo { height: 60px; margin: 0 40px; filter: grayscale(100%); transition: filter 0.3s ease; }
+        .associate-logo:hover { filter: grayscale(0%); }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes fadeIn { to { opacity: 1; transform: scale(1); } }
         .contact-form-container { max-width: 600px; margin: 0 auto; }
         .contact-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
@@ -345,6 +388,8 @@ const GlobalStyles = () => (
             .hero-text { max-width: 100%; } .hero-text .description { margin: 1.5rem auto 2rem; }
             .hero-image img { width: 250px; height: 250px; }
             .services-grid { grid-template-columns: 1fr 1fr; }
+            .associates-banner { padding: 3rem 0; }
+            .associate-logo { height: 45px; margin: 0 30px; }
         }
         @media (max-width: 768px) {
             .nav { height: 80px !important; }
@@ -355,6 +400,8 @@ const GlobalStyles = () => (
             .cookie-bar { flex-direction: column; text-align: center; }
             .chatbot-trigger { width: 90px; height: 90px; }
             .call-button { width: 50px; height: 50px; }
+            .associates-banner { padding: 2rem 0; }
+            .associate-logo { height: 40px; margin: 0 25px; }
         }
     `}</style>
 );
@@ -475,6 +522,33 @@ const Portfolio = ({ lang }) => {
                     <div key={`${image.src}-${index}`} className="portfolio-grid-item" style={{ animationDelay: `${index * 50}ms` }}>
                          <img src={image.src} alt={`${getText(`portfolio_cat_${image.category.replace(' ', '_')}`)} project ${index + 1}`} />
                     </div>
+                ))}
+            </div>
+        </section>
+    );
+};
+
+// --- Component: Associates Banner ---
+const AssociatesBanner = ({ lang }) => {
+    const getText = (key) => translations[lang][key];
+
+    // Duplicate logos to create a seamless loop
+    const extendedLogos = [...associatesLogos, ...associatesLogos];
+
+    return (
+        <section className="section associates-banner">
+            <div className="container">
+                <h2 className="section-title">{getText('associates_title')}</h2>
+                <p className="section-subtitle">{getText('associates_subtitle')}</p>
+            </div>
+            <div className="associates-scroller">
+                {extendedLogos.map((logo, index) => (
+                    <img 
+                        key={`${logo.name}-${index}`}
+                        src={logo.src} 
+                        alt={logo.name} 
+                        className="associate-logo" 
+                    />
                 ))}
             </div>
         </section>
@@ -1064,6 +1138,7 @@ export default function App() {
                 <Hero lang={language} onStartChat={() => setIntakeVisible(true)} />
                 <Services lang={language} />
                 <Portfolio lang={language} />
+                <AssociatesBanner lang={language} />
                 <Contact lang={language} />
             </main>
             <Footer lang={language} />
