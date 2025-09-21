@@ -3,9 +3,8 @@
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Using a hard-coded key for local `vercel dev` testing.
-// Remember to use a DIFFERENT key than the one in intake.js
-const genAI = new GoogleGenerativeAI("AIzaSyDUySxGRAnI2-CKQR2hfG0bHaz7ae4tbM0");
+// SECURE: The API key is now loaded from Vercel's Environment Variables.
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_CHAT);
 
 const systemPrompts = {
     en: `You are the AI assistant for Vasilis Manolakis (Bill Manolakis), a construction contractor in Greece. Your primary job is to help customers by gathering detailed project information. You can also answer general knowledge questions.
@@ -111,13 +110,11 @@ module.exports = async (req, res) => {
 
     } catch (error) {
         console.error("Error calling Gemini API:", error);
-
-        // ✅ FIX: Added specific check for 429 rate-limiting errors.
+        
         if (error.status === 429) {
             return res.status(429).json({ error: 'API quota exceeded. Please check your billing details or wait.' });
         }
 
-        // Handle other potential errors like model being overloaded
         if (error.message && error.message.includes('503')) {
             retries--;
             if (retries === 0) {
@@ -125,11 +122,9 @@ module.exports = async (req, res) => {
             }
             await sleep(1000);
         } else {
-            // General catch-all for other errors
             const errorMessage = error.message || 'Failed to get response from AI model.';
             return res.status(500).json({ error: errorMessage });
         }
     }
   }
 };
-

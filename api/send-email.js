@@ -2,39 +2,22 @@
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  // Log when the function is triggered
-  console.log('--- Received request at /api/send-email ---');
-
   if (req.method !== 'POST') {
-    console.log(`Request method was ${req.method}, expected POST.`);
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // Log the data received from the form
-  console.log('Request body:', req.body);
-
   try {
-    // IMPORTANT: Replaced the placeholder strings with your actual email credentials.
-    // This is a temporary solution for local development. For production,
-    // you should set these as environment variables on Vercel.
-    const EMAIL_HOST = "smtp.gmail.com";
-    const EMAIL_PORT = 465;
-    const EMAIL_SECURE = true; 
-    const EMAIL_USER = "billmanolaki@gmail.com";
-    const EMAIL_PASS = "vlierdgfpcpzvelv";
-    const EMAIL_TO = "billmanolaki@gmail.com";
-
-    console.log('Attempting to create Nodemailer transporter...');
+    // SECURE: Email credentials are now loaded from Vercel's Environment Variables.
+    // The hardcoded constants have been removed.
     const transporter = nodemailer.createTransport({
-      host: EMAIL_HOST,
-      port: EMAIL_PORT,
-      secure: EMAIL_SECURE,
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT, 10),
+      secure: process.env.EMAIL_SECURE === 'true', // Convert string to boolean
       auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
-    console.log('Transporter created successfully.');
 
     const { formType, ...data } = req.body;
     let subject, html;
@@ -66,19 +49,16 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid form type.' });
     }
 
-    console.log('Attempting to send email...');
     await transporter.sendMail({
-      from: `"Vasilis Website" <${EMAIL_USER}>`,
-      to: EMAIL_TO,
+      from: `"Vasilis Website" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_TO,
       subject: subject,
       html: html,
     });
-    console.log('Email sent successfully!');
 
     res.status(200).json({ success: true });
 
   } catch (error) {
-    // This will log the specific error to your terminal
     console.error('---!!! ERROR in /api/send-email !!!---');
     console.error(error);
     res.status(500).json({ error: 'Failed to send email.', details: error.message });

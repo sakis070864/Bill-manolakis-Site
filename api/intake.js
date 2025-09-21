@@ -4,10 +4,8 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const nodemailer = require('nodemailer');
 
-// NOTE: The 'showdown' library is no longer needed with this new approach.
-
-// Using a separate, hard-coded key for the intake AI to avoid rate-limiting conflicts.
-const genAI = new GoogleGenerativeAI("AIzaSyCjNJBx0JdlPm_dSYJz0EcQc1ifSGgJvps");
+// SECURE: The API key is now loaded from Vercel's Environment Variables.
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_INTAKE);
 
 // --- System Prompts (Updated with a final confirmation step) ---
 const systemPrompts = {
@@ -146,11 +144,9 @@ function formatSummaryToHtml(summaryText) {
     `;
     lines.forEach(line => {
         const trimmedLine = line.trim();
-        // Simple rule: if a line is reasonably short and ends with a colon, treat it as a heading.
         if (trimmedLine.length < 70 && trimmedLine.endsWith(':')) {
             html += `<h3 style="color: #34495e; margin-top: 20px;">${trimmedLine.slice(0, -1)}</h3>`;
         } else {
-            // Otherwise, it's a paragraph. We also remove any stray asterisks just in case.
             html += `<p style="margin-left: 15px;">${trimmedLine.replace(/\*/g, '')}</p>`;
         }
     });
@@ -169,7 +165,6 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: 'Missing or invalid request body' });
         }
         
-        // --- STEP 1: Conduct the ongoing conversation ---
         const conversationModel = genAI.getGenerativeModel({
             model: "gemini-2.5-pro",
             systemInstruction: { parts: [{ text: systemPrompts[lang] }] },
@@ -188,11 +183,9 @@ module.exports = async (req, res) => {
             return res.status(200).json({ text: finalBotMessageToUser, conversationComplete: false, summary: null });
         }
 
-        // --- STEP 2: Generate the detailed Greek summary with a NEW prompt ---
-        // Now, the full history will include the user's contact details and final confirmation
         const fullTranscript = history.map(h => 
             `${h.role === 'user' ? 'Πελάτης' : 'Βοηθός'}: ${h.parts[0].text}`
-        ).join('\n') + `\nΠελάτης: ${lastUserMessage}`; // Manually add the final user message
+        ).join('\n') + `\nΠελάτης: ${lastUserMessage}`;
         
         const summarizationPrompt = `
             Παρακάτω είναι η πλήρης απομαγνητοφώνηση μιας συνομιλίας.
@@ -216,27 +209,26 @@ module.exports = async (req, res) => {
         const summaryResult = await summaryModel.generateContent(summarizationPrompt);
         const greekSummaryText = await summaryResult.response.text();
 
-        // --- STEP 3: Send the Greek summary as a formatted email. ---
+        // SECURE: Email credentials are now loaded from Vercel's Environment Variables.
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false,
+            host: process.env.EMAIL_HOST,
+            port: parseInt(process.env.EMAIL_PORT, 10),
+            secure: process.env.EMAIL_SECURE === 'true', // Convert string to boolean
             auth: { 
-                user: "billmanolaki@gmail.com",
-                pass: "vlierdgfpcpzvelv"
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             },
         });
 
         const mailOptions = {
-            from: `"AI Intake Assistant" <billmanolaki@gmail.com>`,
-            to: "billmanolaki@gmail.com",
+            from: `"AI Intake Assistant" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_TO,
             subject: "Νέα Αναφορά Ανάλυσης Έργου από AI Βοηθό",
-            html: formatSummaryToHtml(greekSummaryText), // Use the custom function
+            html: formatSummaryToHtml(greekSummaryText),
         };
         
         await transporter.sendMail(mailOptions);
         
-        // --- STEP 4: Return the final conversational message to the user. ---
         return res.status(200).json({ text: finalBotMessageToUser, conversationComplete: true, summary: null });
 
     } catch (error) {
@@ -244,4 +236,3 @@ module.exports = async (req, res) => {
         return res.status(500).json({ error: "An internal server error occurred.", details: error.message });
     }
 };
-
