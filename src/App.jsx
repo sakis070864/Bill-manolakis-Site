@@ -151,7 +151,11 @@ const translations = {
         associates_subtitle: "Συνεργαζόμαστε με κορυφαίες εταιρείες του κλάδου για να εγγυηθούμε υλικά υψηλής ποιότητας και αντοχής σε κάθε έργο.",
         contact_title: "Επικοινωνήστε Μαζί Μου",
         contact_subtitle: "Συμπληρώστε την παρακάτω φόρμα ή μιλήστε απευθείας με τον AI βοηθό μου για άμεση αξιολόγηση του έργου σας.",
-        footer_text: "Βασίλης Μανωλάκης. Τηλ:693 728 8572 - MAIL:billmanolaki@gmail.com.",
+        footer_line1: "Βασίλης Μανωλάκης.",
+        footer_line2_prefix: "Τηλ:",
+        footer_line2_phone: "693 728 8572",
+        footer_line2_suffix: "- MAIL:",
+        footer_line2_email: "billmanolaki@gmail.com.",
         chat_title: "AI Βοηθός Ανακαινίσεων",
         intake_title: "AI Ανάλυση Έργου",
         chat_initial_greeting: "Γεια σας! Είμαι ο AI βοηθός του Βασίλη. Πώς μπορώ να βοηθήσω με το έργο σας σήμερα;",
@@ -167,7 +171,6 @@ const translations = {
         form_validation_error: "Παρακαλώ συμπληρώστε όλα τα πεδία.",
         cookie_text: "Αυτός ο ιστότοπος χρησιμοποιεί cookies για τη βελτίωση της εμπειρίας σας.",
         cookie_got_it: "Κατάλαβα!",
-        call_us: "Καλέστε μας",
         welcome_title: "Καλώς ήρθατε!",
         welcome_intro: "Είμαι ο Βασίλης Μανωλάκης. Αφήστε με να σας δείξω πώς να χρησιμοποιήσετε τα εργαλεία AI για να ξεκινήσετε το έργο σας.",
         welcome_intake_title: "Για Λεπτομερή Ανάλυση Έργου",
@@ -209,7 +212,11 @@ const translations = {
         associates_subtitle: "We collaborate with leading companies in the industry to guarantee high-quality, durable materials for every project.",
         contact_title: "Get In Touch",
         contact_subtitle: "Fill out the form below, or talk directly with my AI assistant for an immediate project intake.",
-        footer_text: "Vasilis Manolakis. mobil:0030 693 728 8572 - MAIL:billmanolaki@gmail.com.",
+        footer_line1: "Vasilis Manolakis.",
+        footer_line2_prefix: "mobil:",
+        footer_line2_phone: "0030 693 728 8572",
+        footer_line2_suffix: "- MAIL:",
+        footer_line2_email: "billmanolaki@gmail.com.",
         chat_title: "AI Renovation Assistant",
         intake_title: "AI Project Intake",
         chat_initial_greeting: "Hello! I'm Vasilis's AI assistant. How can I help with your project today?",
@@ -225,7 +232,6 @@ const translations = {
         form_validation_error: "Please fill in all fields.",
         cookie_text: "This site uses cookies to enhance your experience.",
         cookie_got_it: "Got it!",
-        call_us: "Call Us",
         welcome_title: "Welcome!",
         welcome_intro: "I'm Vasilis Manolakis. Let me quickly show you how to use the AI tools to get your project started.",
         welcome_intake_title: "For Detailed Project Intake",
@@ -329,6 +335,8 @@ const GlobalStyles = () => (
         .slider-text { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; color: var(--text-muted); font-weight: 500; z-index: 1; transition: opacity 0.2s; }
         .footer { background-color: var(--bg-dark); color: var(--text-muted); padding: 2rem 0; text-align: center; border-top: 1px solid var(--border-color); }
         .footer p { margin: 0 0 1rem 0; }
+        .footer a.footer-link { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+        .footer a.footer-link:hover { color: var(--text-light); text-decoration: underline; }
         .footer-address { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
         .chatbot-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); z-index: 1010; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease-in-out; padding: 1rem; }
         .chatbot-container.hidden { opacity: 0; pointer-events: none; }
@@ -354,33 +362,6 @@ const GlobalStyles = () => (
         .chatbot-trigger.hidden { opacity: 0; transform: scale(0.5); pointer-events: none; }
         .chatbot-trigger:hover { animation-play-state: paused; transform: scale(1.1); }
         .chatbot-trigger img { width: 100%; height: 100%; }
-        .call-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: var(--success);
-            color: var(--text-light);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        .call-button:hover {
-            transform: scale(1.1);
-            background-color: #28a745;
-        }
-        .call-button.hidden {
-            opacity: 0;
-            transform: scale(0.5);
-            pointer-events: none;
-        }
         @keyframes hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
         @keyframes rotate { 100% { transform: rotate(1turn); } }
         @media (max-width: 992px) {
@@ -399,7 +380,6 @@ const GlobalStyles = () => (
             .chatbot-window { max-height: 90vh; }
             .cookie-bar { flex-direction: column; text-align: center; }
             .chatbot-trigger { width: 90px; height: 90px; }
-            .call-button { width: 50px; height: 50px; }
             .associates-banner { padding: 2rem 0; }
             .associate-logo { height: 40px; margin: 0 25px; }
         }
@@ -701,11 +681,11 @@ const ContactForm = ({ lang }) => {
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email">{getText('form_email')}</label>
+                    <label htmlFor="email">{getText('email')}</label>
                     <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="message">{getText('form_message')}</label>
+                    <label htmlFor="message">{getText('message')}</label>
                     <textarea id="message" name="message" rows="5" value={formData.message} onChange={handleChange} required></textarea>
                 </div>
                 <SlideToSend onSend={handleSubmit} lang={lang} isSubmitting={status.submitting} onInvalidAttempt={attemptCounter} />
@@ -732,9 +712,18 @@ const Contact = ({ lang }) => {
 // --- Component: Footer ---
 const Footer = ({ lang }) => {
     const getText = (key) => translations[lang][key];
+    const phoneLink = lang === 'en' ? '+306937288572' : '6937288572';
+
     return (
         <footer className="footer">
-            <p>&copy; {new Date().getFullYear()} {getText('footer_text')}</p>
+            <p>
+                &copy; {new Date().getFullYear()} {getText('footer_line1')} {getText('footer_line2_prefix')} 
+                <a href={`tel:${phoneLink}`} className="footer-link">{getText('footer_line2_phone')}</a>
+                {' '}
+                {getText('footer_line2_suffix')} 
+                {' '}
+                <a href={`mailto:${getText('footer_line2_email').slice(0,-1)}`} className="footer-link">{getText('footer_line2_email')}</a>
+            </p>
             <div className="footer-address">
                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
                 <span>{getText('address')}</span>
@@ -742,6 +731,7 @@ const Footer = ({ lang }) => {
         </footer>
     );
 };
+
 
 // --- Component: Cookie Bar ---
 const CookieBar = ({ isVisible, onAccept, lang }) => {
@@ -763,18 +753,6 @@ const ChatbotTrigger = ({ onClick, isVisible }) => {
         </div>
     );
 }
-
-// --- Component: Floating Call Button ---
-const FloatingCallButton = ({ isVisible, lang }) => {
-    const getText = (key) => translations[lang][key];
-    return (
-        <a href="tel:6937288572" className={`call-button ${isVisible ? '' : 'hidden'}`} aria-label={getText('call_us')}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="currentColor">
-                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.74 21 3 13.25 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-            </svg>
-        </a>
-    );
-};
 
 // --- Component: Generic Chatbot (Reusable) ---
 const GenericChatbot = ({ lang, isVisible, onClose, initialGreeting, titleKey, apiUrl, formType }) => {
@@ -1144,7 +1122,6 @@ export default function App() {
             <Footer lang={language} />
             
             <ChatbotTrigger onClick={() => setChatbotVisible(true)} isVisible={!isChatbotVisible && !showCookieBar && !isIntakeVisible && !showWelcomeModal} />
-            <FloatingCallButton isVisible={!isChatbotVisible && !isIntakeVisible && !showCookieBar && !showWelcomeModal} lang={language} />
 
             {toneLoaded && <GenericChatbot 
                 lang={language} 
