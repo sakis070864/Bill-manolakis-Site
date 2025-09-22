@@ -118,7 +118,7 @@ export default function InternalInfo({ isVisible, onClose }) {
                         <h3 style={{ borderBottom: '1px solid #334155', paddingBottom: '0.5rem' }}>Deployment & Credentials</h3>
                         <p><strong>Platform:</strong> Vercel</p>
                         <p><strong>Vercel / Google Login:</strong> <code style={{ backgroundColor: '#0f172a', padding: '2px 6px', borderRadius: '4px' }}>billmanolaki@gmail.com</code></p>
-                        <p><strong>Vercel / Google Password:</strong> <code style={{ backgroundColor: '#0f172a', padding: '2px 6px', borderRadius: '4px' }}>billmanolaki1964@gmail.com</code></p>
+                        <p><strong>Vercel / Google Password:</strong> <code style={{ backgroundColor: '#0f172a', padding: '2px 6px', borderRadius: '4px' }}>billmanolaki1969@gmail.com</code></p>
                         
                         <h3 style={{ borderBottom: '1px solid #334155', paddingBottom: '0.5rem' }}>API Keys</h3>
                         <p>The Google Gemini API keys are located in the Google Cloud project associated with the account above.</p>
