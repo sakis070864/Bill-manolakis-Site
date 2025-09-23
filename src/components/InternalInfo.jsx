@@ -8,13 +8,18 @@ const Modal = ({ children, onClose }) => {
         backgroundColor: 'rgba(15, 23, 42, 0.85)', zIndex: 2000,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         backdropFilter: 'blur(5px)',
-        animation: 'fadeIn 0.2s ease-out'
+        animation: 'fadeIn 0.2s ease-out',
+        padding: '1rem' // Added padding for small screens
     };
     const modalContentStyle = {
         backgroundColor: '#1e293b', color: '#f1f5f9', padding: '2rem',
         borderRadius: '0.75rem', width: '100%', maxWidth: '550px',
         border: '1px solid #334155', boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-        animation: 'scaleUp 0.2s ease-out'
+        animation: 'scaleUp 0.2s ease-out',
+        maxHeight: '90vh', // Ensures modal is never taller than 90% of the screen height
+        display: 'flex', // Use flexbox for layout
+        flexDirection: 'column', // Stack children vertically
+        boxSizing: 'border-box' // Ensures padding doesn't add to width/height
     };
     const keyframes = `
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -110,8 +115,9 @@ export default function InternalInfo({ isVisible, onClose }) {
             {/* RENDER THE INFORMATION DISPLAY MODAL (only after successful auth) */}
             {showInfoDisplay && (
                 <Modal onClose={onClose}>
-                    <h2 style={{ marginTop: 0, color: '#2dd4bf' }}>Internal Project Information</h2>
-                    <div style={{ lineHeight: '1.6' }}>
+                    <h2 style={{ marginTop: 0, color: '#2dd4bf', flexShrink: 0 }}>Internal Project Information</h2>
+                    {/* This div is now the scrollable container */}
+                    <div style={{ lineHeight: '1.6', overflowY: 'auto', paddingRight: '1rem', flexGrow: 1 }}>
                         <h3 style={{ borderBottom: '1px solid #334155', paddingBottom: '0.5rem' }}>Source Code</h3>
                         <p><strong>GitHub Repo:</strong> <code style={{ backgroundColor: '#0f172a', padding: '2px 6px', borderRadius: '4px' }}>sakis070864/Bill-manolakis-Site</code></p>
 
@@ -131,7 +137,7 @@ export default function InternalInfo({ isVisible, onClose }) {
                             <li><strong>api/send-email.js:</strong> Sends email from the contact form.</li>
                         </ul>
                     </div>
-                     <button onClick={onClose} style={{ width: '100%', padding: '0.75rem', marginTop: '1rem', backgroundColor: '#94a3b8', color: '#0f172a', border: 'none', borderRadius: '0.5rem', cursor: 'pointer', fontWeight: 'bold' }}>
+                     <button onClick={onClose} style={{ width: '100%', padding: '0.75rem', marginTop: '1rem', backgroundColor: '#94a3b8', color: '#0f172a', border: 'none', borderRadius: '0.5rem', cursor: 'pointer', fontWeight: 'bold', flexShrink: 0 }}>
                         Close
                     </button>
                 </Modal>
@@ -139,3 +145,4 @@ export default function InternalInfo({ isVisible, onClose }) {
         </>
     );
 }
+
