@@ -71,8 +71,8 @@ module.exports = async (req, res) => {
           model: "gemini-2.5-pro",
           systemInstruction: {
               parts: [{ text: systemPrompts[lang] }]
-          },
-          tools: [{ "google_search": {} }],
+          }, // Αυτό το κόμμα μπορεί να μείνει, δεν πειράζει
+          // tools: [{ "google_search": {} }],
       });
       
       const chat = model.startChat({
