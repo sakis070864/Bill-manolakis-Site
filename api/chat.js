@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
           systemInstruction: {
               parts: [{ text: systemPrompts[lang] }]
           }, // Αυτό το κόμμα μπορεί να μείνει, δεν πειράζει
-          // tools: [{ "google_search": {} }],
+           tools: [{ "google_search": {} }],
       });
       
       const chat = model.startChat({
